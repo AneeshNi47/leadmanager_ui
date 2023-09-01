@@ -1,11 +1,5 @@
 import React, { Component, Fragment } from "react";
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  Redirect,
-} from "react-router-dom";
-import { createRoot } from "react-dom/client";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Header from "./layout/Header";

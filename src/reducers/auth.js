@@ -8,7 +8,6 @@ import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
 } from "../actions/types";
-import leads from "../components/leads/leads";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -17,6 +16,7 @@ const initialState = {
   user: null,
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:

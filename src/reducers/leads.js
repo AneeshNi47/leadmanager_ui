@@ -4,6 +4,7 @@ const initialState = {
   leads: [],
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action) {
   switch (action.type) {
     case GET_LEADS:
@@ -19,7 +20,7 @@ export default function (state = initialState, action) {
     case DELETE_LEAD:
       return {
         ...state,
-        leads: state.leads.filter((lead) => lead.id != action.payload),
+        leads: state.leads.filter((lead) => lead.id !== action.payload),
       };
     default:
       return state;

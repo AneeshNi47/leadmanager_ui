@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link, Navigate } from "react-router-dom";
 import { loginUser } from "../../actions/auth";
-import { BASE_URL } from "../../actions/types";
 
 export class Login extends Component {
   state = {

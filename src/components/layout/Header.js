@@ -37,9 +37,9 @@ export class Header extends Component {
     return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <button className="navbar-brand" href="#">
             Lead Manager
-          </a>
+          </button>
           <button
             className="navbar-toggler"
             type="button"
@@ -54,9 +54,13 @@ export class Header extends Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <button
+                  className="nav-link active"
+                  aria-current="page"
+                  href="#"
+                >
                   Home
-                </a>
+                </button>
               </li>
             </ul>
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">

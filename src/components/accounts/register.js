@@ -93,7 +93,7 @@ export class Register extends Component {
                 name="password_confirm"
                 onChange={this.onChange}
               />
-              {password != password_confirm ? (
+              {password !== password_confirm ? (
                 <div id="emailHelp" className="form-text">
                   Passwords does not Match
                 </div>
