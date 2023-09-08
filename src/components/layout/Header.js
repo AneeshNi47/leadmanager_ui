@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/auth";
+
+import { NavDropdown, Navbar, Button } from "react-bootstrap";
+
 export class Header extends Component {
   render() {
     const { isAuthenticated, user } = this.props.auth;
@@ -21,54 +24,34 @@ export class Header extends Component {
     );
     const authLinks = (
       <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-        <span className="navbar-text  mr-3">
-          <strong> {user ? user.username : ""}</strong>
-        </span>
-        <li className="nav-item">
-          <button
-            onClick={this.props.logoutUser}
-            className="nav-link btn btn-info text-light btn-sm"
-          >
+        <NavDropdown title={user ? user.username : ""} id="basic-nav-dropdown">
+          <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+
+          {user ? (
+            user.is_superuser ? (
+              <NavDropdown.Item href="#action/3.3">Groups</NavDropdown.Item>
+            ) : (
+              ""
+            )
+          ) : (
+            ""
+          )}
+
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={this.props.logoutUser}>
             Logout
-          </button>
-        </li>
+          </NavDropdown.Item>
+        </NavDropdown>
       </ul>
     );
     return (
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <button className="navbar-brand" href="#">
-            Lead Manager
-          </button>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <button
-                  className="nav-link active"
-                  aria-current="page"
-                  href="#"
-                >
-                  Home
-                </button>
-              </li>
-            </ul>
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {!isAuthenticated ? guestLinks : authLinks}
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar className="bg-body-tertiary">
+        <Navbar.Brand href="#">LeadManager</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>{!isAuthenticated ? guestLinks : authLinks}</Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }

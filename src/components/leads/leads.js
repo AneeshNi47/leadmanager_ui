@@ -2,23 +2,64 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { getLeads, deleteLead } from "../../actions/leads";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPencil,
+  faPlusCircle,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { Table } from "react-bootstrap";
+import { WS_URL } from "../../actions/types";
 
-export class Leads extends Component {
-  state = {};
+class Leads extends Component {
+  state = {
+    ws: null,
+  };
+
   static propTypes = {
     leads: PropTypes.array.isRequired,
     getLeads: PropTypes.func.isRequired,
     deleteLead: PropTypes.func.isRequired,
   };
+
   componentDidMount() {
     this.props.getLeads();
   }
+
+  testWebSocket = () => {
+    this.connect();
+  };
+  connect = () => {
+    var ws = new WebSocket(`${WS_URL}/ws/leads/`);
+    ws.onopen = () => {
+      console.log("Connected to the WebSocket");
+    };
+    ws.onmessage = (evt) => {
+      this.props.getLeads(); // Refresh the list when new data is sent from the server
+    };
+    ws.onerror = (err) => {
+      console.error("WebSocket Error:", err);
+    };
+    ws.onclose = () => {
+      console.log("Disconnected from the WebSocket");
+      this.setState({ ws: null });
+    };
+    this.setState({ ws });
+  };
+
   render() {
     return (
       <div>
-        <button>Add Lead</button>
-        <h1>List of Leads</h1>
-        <table className="table">
+        <h1>
+          List of Leads{" "}
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            className="btn"
+            onClick={this.props.openForm}
+          />
+          <button onClick={this.testWebSocket}>Tests</button>
+        </h1>
+        <Table striped="columns">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -36,23 +77,30 @@ export class Leads extends Component {
                 <td>{lead.email}</td>
                 <td>{lead.message}</td>
                 <td>
-                  <button
-                    className="btn btn-danger btn-sm"
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    style={{ margin: "2px", padding: "2px" }}
+                    className="btn"
                     onClick={this.props.deleteLead.bind(this, lead.id)}
-                  >
-                    Del
-                  </button>
-                  <button className="btn btn-success btn-sm">Update</button>
+                  />
+                  <FontAwesomeIcon
+                    style={{ margin: "2px", padding: "2px" }}
+                    icon={faPencil}
+                    className="btn"
+                    onClick={this.props.openForm}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   leads: state.leadReducer.leads,
 });
+
 export default connect(mapStateToProps, { getLeads, deleteLead })(Leads);

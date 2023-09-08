@@ -15,3 +15,4 @@ export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
+export const WS_URL = process.env.REACT_APP_WS_URL;
