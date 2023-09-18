@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/auth";
 
-import { NavDropdown, Navbar, Button } from "react-bootstrap";
+import { NavDropdown, Navbar } from "react-bootstrap";
 
 export class Header extends Component {
   render() {
@@ -24,6 +24,12 @@ export class Header extends Component {
     );
     const authLinks = (
       <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+        <Link className="nav-link" to="/qr-codes">
+          QR Codes
+        </Link>
+        <Link className="nav-link" to="/leads">
+          Leads
+        </Link>
         <NavDropdown title={user ? user.username : ""} id="basic-nav-dropdown">
           <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
 

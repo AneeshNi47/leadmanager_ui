@@ -5,6 +5,13 @@ export const GET_ERRORS = "GET_ERRORS";
 export const GET_MESSAGES = "GET_MESSAGES";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
 
+export const GET_QR_CODES = "GET_QR_CODES";
+export const DELETE_QR_CODE = "DELETE_QR_CODE";
+export const ADD_QR_CODE = "ADD_QR_CODE";
+export const GET_QR_CODE_TYPES = "GET_QR_CODE_TYPES";
+export const REMOVE_IMAGE_URL = "REMOVE_IMAGE_URL";
+export const GENERATE_QR_CODE = "GENERATE_QR_CODE";
+
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

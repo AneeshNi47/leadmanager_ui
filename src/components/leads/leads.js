@@ -57,7 +57,6 @@ class Leads extends Component {
             className="btn"
             onClick={this.props.openForm}
           />
-          <button onClick={this.testWebSocket}>Tests</button>
         </h1>
         <Table striped="columns">
           <thead>
