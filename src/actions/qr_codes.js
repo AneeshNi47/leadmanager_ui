@@ -68,43 +68,47 @@ export const deleteQrCode = (id) => (dispatch, getState) => {
     });
 };
 
-export const generateQRCode =
-  (id, download = false) =>
-  (dispatch, getState) => {
-    console.log("generateing");
-    axios
-      .get(`${BASE_URL}/api/qr-codes/${id}/generate_qr/`, {
-        ...tokenConfig(getState),
-        responseType: "blob",
-      })
-      .then((res) => {
-        const blob = new Blob([res.data], { type: "image/png" });
-        const url = window.URL.createObjectURL(blob);
-        if (download) {
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "qr-code.png");
-          document.body.appendChild(link);
-          link.click();
-        } else {
-          console.log("dispatching");
+export const generateQRCode = (id, download = false) => {
+  return async (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      console.log("generateing");
+      axios
+        .get(`${BASE_URL}/api/qr-codes/${id}/generate_qr/`, {
+          ...tokenConfig(getState),
+          responseType: "blob",
+        })
+        .then((res) => {
+          const blob = new Blob([res.data], { type: "image/png" });
+          const url = window.URL.createObjectURL(blob);
+          if (download) {
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "qr-code.png");
+            document.body.appendChild(link);
+            link.click();
+          } else {
+            console.log("dispatching");
+            dispatch({
+              type: GENERATE_QR_CODE,
+              payload: url,
+            });
+          }
+          resolve();
+        })
+        .catch((err) => {
+          const errors = {
+            msg: err.response.data,
+            status: err.response.status,
+          };
           dispatch({
-            type: GENERATE_QR_CODE,
-            payload: url,
+            type: GET_ERRORS,
+            payload: errors,
           });
-        }
-      })
-      .catch((err) => {
-        const errors = {
-          msg: err.response.data,
-          status: err.response.status,
-        };
-        dispatch({
-          type: GET_ERRORS,
-          payload: errors,
+          reject(err);
         });
-      });
+    });
   };
+};
 
 export const addQrCode = (qr_code) => (dispatch, getState) => {
   axios

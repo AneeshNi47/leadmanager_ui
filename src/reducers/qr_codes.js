@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
         qr_codes: action.payload,
       };
     case GENERATE_QR_CODE:
-      console.log("action.payload");
+      console.log("reducer", action.payload);
       return {
         ...state,
         qr_code_url: action.payload,

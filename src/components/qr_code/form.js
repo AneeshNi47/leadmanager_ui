@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { addQrCode, getQrCodeTypes } from "../../actions/qr_codes";
-import { Form, Modal, Button } from "react-bootstrap";
+import { Form, Modal, Button, Accordion, Row, Col } from "react-bootstrap";
 import {
   WifiConnectForm,
   StringForm,
@@ -16,15 +16,15 @@ import {
 export class LeadForm extends Component {
   state = {
     name: "",
-    type: "1",
+    type: "",
     information: {},
     scale: 4,
     unit: "mm",
     border: "1",
-    dark: "darkred",
+    dark: "#8b0000",
     light: null,
-    data_dark: "darkorange",
-    data_light: "yellow",
+    data_dark: "#ff8e00",
+    data_light: "#ffff00",
   };
 
   static propTypes = {
@@ -36,7 +36,9 @@ export class LeadForm extends Component {
     this.props.getQrCodeTypes();
   }
 
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -67,7 +69,7 @@ export class LeadForm extends Component {
     this.setState({
       name: "",
       email: "",
-      type: "string",
+      type: "",
       information: "",
       scale: "",
       unit: "",
@@ -79,20 +81,48 @@ export class LeadForm extends Component {
     });
     this.props.closeForm();
   };
+  get_qr_code_form = (type) => {
+    const { qr_code_types } = this.props; // Destructuring for easier reference
+    const selectedType = qr_code_types.find(
+      (qr_type) => qr_type.id === parseInt(type)
+    );
 
+    if (selectedType) {
+      // Check if selectedType is not undefined
+      const { type_name } = selectedType; // Further destructuring
+
+      let FormComponent; // Variable to hold the form component
+      switch (type_name) {
+        case "string":
+          console.log(type_name);
+          FormComponent = StringForm;
+          break;
+        case "wifi_connect":
+          FormComponent = WifiConnectForm;
+          break;
+        case "mecard":
+          FormComponent = MCardForm;
+          break;
+        case "vcard":
+          FormComponent = VCardForm;
+          break;
+        case "geoLocation":
+          FormComponent = LocationForm;
+          break;
+        case "epc":
+          FormComponent = EPCForm;
+          break;
+        default:
+          FormComponent = null;
+      }
+
+      return FormComponent ? <FormComponent onChange={this.onChange} /> : null;
+    }
+  };
   render() {
-    const {
-      name,
-      type,
-      information,
-      scale,
-      unit,
-      border,
-      dark,
-      light,
-      data_dark,
-      data_light,
-    } = this.state;
+    const { name, type, scale, border, dark, light, data_dark, data_light } =
+      this.state;
+
     return (
       <>
         <Modal.Header>{name === "" ? "Create New QR Code" : name}</Modal.Header>
@@ -125,12 +155,74 @@ export class LeadForm extends Component {
                 ))}
               </Form.Select>
             </Form.Group>
-            {type === "1" && <StringForm onChange={this.onChange} />}
-            {type === "2" && <WifiConnectForm onChange={this.onChange} />}
-            {type === "3" && <MCardForm onChange={this.onChange} />}
-            {type === "4" && <VCardForm onChange={this.onChange} />}
-            {type === "5" && <LocationForm onChange={this.onChange} />}
-            {type === "6" && <EPCForm onChange={this.onChange} />}
+            {this.get_qr_code_form(type)}
+            <Accordion defaultActiveKey="1">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Design Settings</Accordion.Header>
+                <Accordion.Body>
+                  <Form.Label>Scale {scale}</Form.Label>
+                  <Form.Range
+                    onChange={this.onChange}
+                    name="scale"
+                    value={scale}
+                  />
+                  <Form.Label>Border {border}</Form.Label>
+                  <Form.Range
+                    onChange={this.onChange}
+                    name="border"
+                    value={border}
+                  />
+                  <Row>
+                    <Col>
+                      {" "}
+                      <Form.Label htmlFor="exampleColorInput">
+                        Data Dark
+                      </Form.Label>
+                      <Form.Control
+                        type="color"
+                        value={data_dark}
+                        readOnly={false}
+                        name="data_dark"
+                        onChange={this.onChange}
+                        title="Choose your color"
+                      />
+                      <Form.Label htmlFor="exampleColorInput">
+                        Data Light
+                      </Form.Label>
+                      <Form.Control
+                        type="color"
+                        value={data_light}
+                        readOnly={false}
+                        onChange={this.onChange}
+                        name="data_light"
+                        title="Choose your color"
+                      />
+                    </Col>
+                    <Col>
+                      {" "}
+                      <Form.Label htmlFor="exampleColorInput">Light</Form.Label>
+                      <Form.Control
+                        type="color"
+                        value={light}
+                        readOnly={false}
+                        onChange={this.onChange}
+                        name="light"
+                        title="Choose your color"
+                      />
+                      <Form.Label htmlFor="exampleColorInput">Dark</Form.Label>
+                      <Form.Control
+                        type="color"
+                        readOnly={false}
+                        onChange={this.onChange}
+                        value={dark}
+                        name="dark"
+                        title="Choose your color"
+                      />
+                    </Col>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
             <Button className="submit" type="submit">
               Submit
             </Button>
