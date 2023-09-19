@@ -22,6 +22,8 @@ export const MCardForm = ({ onChange }) => (
     <Form.Control type="text" name="name" onChange={onChange} />
     <Form.Label>Email</Form.Label>
     <Form.Control type="text" name="email" onChange={onChange} />
+    <Form.Label>Phone</Form.Label>
+    <Form.Control type="text" name="phone" onChange={onChange} />
     <Form.Label>URL</Form.Label>
     <Form.Control type="text" name="url" onChange={onChange} />
   </Form.Group>
@@ -34,6 +36,8 @@ export const VCardForm = ({ onChange }) => (
     <Form.Control type="text" name="displayname" onChange={onChange} />
     <Form.Label>Email</Form.Label>
     <Form.Control type="text" name="email" onChange={onChange} />
+    <Form.Label>Phone</Form.Label>
+    <Form.Control type="text" name="phone" onChange={onChange} />
     <Form.Label>URL</Form.Label>
     <Form.Control type="text" name="url" onChange={onChange} />
   </Form.Group>

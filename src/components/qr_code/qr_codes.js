@@ -35,7 +35,7 @@ class QRCodes extends Component {
   };
 
   openModal = (url, id) => {
-    console.log("urk", url);
+    console.log("url", url);
     this.setState({
       modalIsOpen: true,
       selectedId: id,
@@ -60,6 +60,7 @@ class QRCodes extends Component {
 
   render() {
     const { qr_codes, qr_code_types } = this.props;
+    const { loading } = this.state;
     return (
       <div>
         <h1>
@@ -114,6 +115,7 @@ class QRCodes extends Component {
                         });
                         try {
                           await this.props.generateQRCode(qr_code.id, false);
+                          console.log(this.props.url);
                           this.openModal(this.props.url, qr_code.id);
                         } catch (error) {
                           console.log(error);
@@ -129,7 +131,12 @@ class QRCodes extends Component {
         </Table>
 
         <Modal show={this.state.modalIsOpen} onHide={this.closeModal}>
-          <img src={this.state.currentQRCodeURL} alt="QR Code" />
+          {loading ? (
+            <FontAwesomeIcon icon="spinner" spin />
+          ) : (
+            <img src={this.state.currentQRCodeURL} alt="QR Code" />
+          )}
+
           <Button
             onClick={() =>
               this.props.generateQRCode(this.state.selectedId, true)
