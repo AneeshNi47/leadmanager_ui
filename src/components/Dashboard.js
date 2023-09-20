@@ -5,16 +5,13 @@ import { Link } from "react-router-dom";
 class Dashboard extends Component {
   render() {
     return (
-      <Container>
+      <Container style={{ margin: "20px", padding: "20px" }}>
         <Row>
           <Col>
             <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>Lead Manager</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </Card.Text>
+                <Card.Text>Create and Manage your leads here!</Card.Text>
                 <Link to="/leads">
                   <Button variant="primary">Start</Button>
                 </Link>
@@ -26,8 +23,7 @@ class Dashboard extends Component {
               <Card.Body>
                 <Card.Title>QR Code Generator</Card.Title>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  Generate quick QR codes and download them with your data!
                 </Card.Text>
                 <Link to="/qr-codes">
                   <Button variant="primary">Start</Button>
