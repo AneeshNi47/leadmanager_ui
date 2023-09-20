@@ -1,8 +1,29 @@
 import axios from "axios";
-import { GET_LEADS, DELETE_LEAD, ADD_LEAD, GET_ERRORS } from "./types";
+import {
+  GET_LEADS,
+  DELETE_LEAD,
+  ADD_LEAD,
+  GET_ERRORS,
+  GET_LEAD_STATUS,
+  UPDATE_LEAD,
+} from "./types";
 import { createMessage, returnErrors } from "./messages";
 import { tokenConfig } from "./auth";
 import { BASE_URL } from "./types";
+
+export const getLeadStatus = () => (dispatch, getState) => {
+  axios
+    .get(`${BASE_URL}/api/lead_status/`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_LEAD_STATUS,
+        payload: res.data,
+      });
+    })
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
 
 export const getLeads = () => (dispatch, getState) => {
   axios
@@ -47,6 +68,20 @@ export const addLead = (lead) => (dispatch, getState) => {
       dispatch(createMessage({ leadAdded: "Lead Successfully Added" }));
       dispatch({
         type: ADD_LEAD,
+        payload: res.data,
+      });
+    })
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+export const updateLead = (leadId, lead) => (dispatch, getState) => {
+  axios
+    .put(`${BASE_URL}/api/leads/${leadId}/`, lead, tokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ leadAdded: "Lead Successfully Added" }));
+      dispatch({
+        type: UPDATE_LEAD,
         payload: res.data,
       });
     })

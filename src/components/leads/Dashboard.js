@@ -6,16 +6,18 @@ import { Modal } from "react-bootstrap";
 export class Dashboard extends Component {
   state = {
     addLeadForm: false,
+    edit_lead_data: null,
   };
-  onOpenForm = () => this.setState({ addLeadForm: true });
+  onOpenForm = (data) =>
+    this.setState({ addLeadForm: true, edit_lead_data: data });
   handleClose = () => this.setState({ addLeadForm: false });
   render() {
-    const { addLeadForm } = this.state;
+    const { addLeadForm, edit_lead_data } = this.state;
     return (
       <Fragment>
         <Leads openForm={this.onOpenForm} />
         <Modal show={addLeadForm} onHide={this.handleClose}>
-          <Form closeForm={this.handleClose} />
+          <Form closeForm={this.handleClose} data={edit_lead_data} />
         </Modal>
       </Fragment>
     );

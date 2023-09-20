@@ -14,6 +14,7 @@ import Login from "./accounts/login";
 import { Provider } from "react-redux";
 import { loadUser } from "../actions/auth";
 import store from "../store";
+import { Container } from "react-bootstrap";
 
 class App extends Component {
   componentDidMount() {
@@ -27,7 +28,7 @@ class App extends Component {
             <ToastContainer />
             <Header />
             <Alerts />
-            <div className="container">
+            <Container>
               <Routes>
                 <Route
                   path="/"
@@ -44,7 +45,7 @@ class App extends Component {
                 <Route exact path="/register" element={<Register />} />
                 <Route exact path="/login" element={<Login />} />
               </Routes>
-            </div>
+            </Container>
           </Fragment>
         </Router>
       </Provider>
