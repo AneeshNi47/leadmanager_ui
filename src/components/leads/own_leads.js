@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getLeads, deleteLead } from "../../actions/leads";
+import { getLeads, deleteLead, getLeadStatus } from "../../actions/leads";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPencil,
@@ -10,8 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Form, Table, Row, Col } from "react-bootstrap";
 import { WS_URL } from "../../actions/types";
+import WebSocketUtility from "../../websocket/websocket";
 
-class Leads extends Component {
+class OwnLeads extends Component {
   state = {
     ws: null,
     isWsConnected: false,
@@ -21,46 +22,31 @@ class Leads extends Component {
     leads: PropTypes.array.isRequired,
     getLeads: PropTypes.func.isRequired,
     deleteLead: PropTypes.func.isRequired,
+    getLeadStatus: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.props.getLeads();
+    this.props.getLeadStatus();
   }
 
   toggleWebSocket = () => {
     this.setState(
       (prevState) => ({ isWsConnected: !prevState.isWsConnected }),
       () => {
-        this.state.isWsConnected ? this.connect() : this.disconnect();
+        this.state.isWsConnected
+          ? WebSocketUtility.connect(WS_URL, (evt) => {
+              console.log(evt);
+              this.props.getLeads();
+            })
+          : WebSocketUtility.disconnect();
       }
     );
   };
 
-  connect = () => {
-    const ws = new WebSocket(`${WS_URL}/ws/leads/`);
-    ws.onopen = () => {
-      console.log("Connected to the WebSocket");
-    };
-    ws.onmessage = (evt) => {
-      console.log(evt);
-      this.props.getLeads();
-    };
-    ws.onerror = (err) => {
-      console.error("WebSocket Error:", err);
-    };
-    ws.onclose = () => {
-      console.log("Disconnected from the WebSocket");
-    };
-    this.setState({ ws });
-  };
-
-  disconnect = () => {
-    if (this.state.ws) {
-      this.state.ws.close();
-    }
-  };
-
   render() {
+    const { leads_status, leads, user } = this.props;
+    const all_leads = leads.filter((lead) => lead.owner === user.id);
     return (
       <div>
         <Row>
@@ -97,13 +83,19 @@ class Leads extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.leads.map((lead, i) => (
+            {all_leads.map((lead, i) => (
               <tr key={lead.id}>
                 <th scope="row">{i + 1}</th>
                 <td>{lead.name}</td>
                 <td>{lead.email}</td>
                 <td>{lead.message}</td>
-                <td>{lead.status}</td>
+                <td>
+                  {leads_status && lead.status
+                    ? leads_status.filter(
+                        (status) => status.id === lead.status
+                      )[0].status_title
+                    : "--"}
+                </td>
                 <td>
                   <FontAwesomeIcon
                     icon={faTrash}
@@ -128,7 +120,13 @@ class Leads extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.authReducer.user,
   leads: state.leadReducer.leads,
+  leads_status: state.leadReducer.leads_status,
 });
 
-export default connect(mapStateToProps, { getLeads, deleteLead })(Leads);
+export default connect(mapStateToProps, {
+  getLeads,
+  deleteLead,
+  getLeadStatus,
+})(OwnLeads);

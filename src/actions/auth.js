@@ -8,6 +8,7 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   REGISTER_FAIL,
+  GET_USERS,
 } from "./types";
 import { returnErrors } from "./messages";
 import { BASE_URL } from "./types";
@@ -29,6 +30,25 @@ export const loadUser = () => (dispatch, getState) => {
       });
     });
 };
+
+export const get_users = () => (dispatch, getState) => {
+  console.log("get users");
+  axios
+    .get(`${BASE_URL}/api/auth/non_super_users`, tokenConfig(getState))
+    .then((res) => {
+      dispatch({
+        type: GET_USERS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    });
+};
+
 export const registerUser =
   ({ username, email, password }) =>
   (dispatch) => {

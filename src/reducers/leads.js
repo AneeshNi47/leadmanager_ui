@@ -30,13 +30,16 @@ export default function (state = initialState, action) {
         leads: [...state.leads, action.payload],
       };
     case UPDATE_LEAD:
-      console.log(action.payload);
+      let updatedLeads = [...state.leads];
+      for (let i = 0; i < updatedLeads.length; i++) {
+        if (updatedLeads[i].id === action.payload.id) {
+          updatedLeads[i] = action.payload;
+          break;
+        }
+      }
       return {
         ...state,
-        leads: [
-          ...state.leads.filter((lead) => lead.id !== action.payload.id),
-          action.payload,
-        ],
+        leads: updatedLeads,
       };
     case DELETE_LEAD:
       return {
