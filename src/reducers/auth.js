@@ -6,6 +6,7 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_FAIL,
+  GET_USERS,
   REGISTER_SUCCESS,
 } from "../actions/types";
 
@@ -14,6 +15,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: false,
   user: null,
+  users: [],
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -33,7 +35,13 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: true,
       };
+    case GET_USERS:
+      return {
+        ...state,
+        users: action.payload,
+      };
     case USER_LOADED:
+      console.log(action.payload);
       return {
         ...state,
         isLoading: false,

@@ -79,7 +79,7 @@ export const updateLead = (leadId, lead) => (dispatch, getState) => {
   axios
     .put(`${BASE_URL}/api/leads/${leadId}/`, lead, tokenConfig(getState))
     .then((res) => {
-      dispatch(createMessage({ leadAdded: "Lead Successfully Added" }));
+      dispatch(createMessage({ leadAdded: "Lead Successfully Updated" }));
       dispatch({
         type: UPDATE_LEAD,
         payload: res.data,

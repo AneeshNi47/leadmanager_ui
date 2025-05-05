@@ -31,29 +31,33 @@ export class Header extends Component {
           Leads
         </Link>
         <NavDropdown
-          style={{ color: "white" }}
-          title={user ? user.username : ""}
+          style={{ color: "white", backgroundColor: "#333" }} // added backgroundColor here
+          title={
+            <span style={{ color: "white" }}>{user ? user.username : ""}</span>
+          }
           id="basic-nav-dropdown"
         >
-          <NavDropdown.Item style={{ color: "white" }} href="#action/3.1">
+          <NavDropdown.Item
+            style={{ color: "white", backgroundColor: "#333" }}
+            href="#action/3.1"
+          >
             Profile
           </NavDropdown.Item>
 
-          {user ? (
-            user.is_superuser ? (
-              <NavDropdown.Item style={{ color: "white" }} href="#action/3.3">
-                Groups
-              </NavDropdown.Item>
-            ) : (
-              ""
-            )
-          ) : (
-            ""
+          {user && user.is_superuser && (
+            <Link
+              style={{ color: "white" }}
+              className="nav-link"
+              to="/groups"
+              href="#action/3.3"
+            >
+              Groups
+            </Link>
           )}
 
           <NavDropdown.Divider />
           <NavDropdown.Item
-            style={{ color: "white" }}
+            style={{ color: "white", backgroundColor: "#333" }}
             onClick={this.props.logoutUser}
           >
             Logout

@@ -5,8 +5,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./layout/Header";
 import Alerts from "./layout/Alerts";
-import { Dashboard as LeadsDashboard } from "./leads/Dashboard";
+import LeadsDashboard from "./leads/Dashboard";
 import { Dashboard as QRCodesDashboard } from "./qr_code/Dashboard";
+import Users from "./accounts/users";
+import Groups from "./accounts/groups";
 import Dashboard from "./Dashboard";
 import Register from "./accounts/register";
 import PrivateRoute from "./common/PrivateRoute";
@@ -41,6 +43,14 @@ class App extends Component {
                 <Route
                   path="/leads"
                   element={<PrivateRoute element={LeadsDashboard} />}
+                />
+                <Route
+                  path="/groups"
+                  element={<PrivateRoute element={Groups} />}
+                />
+                <Route
+                  path="/users"
+                  element={<PrivateRoute element={Users} />}
                 />
                 <Route exact path="/register" element={<Register />} />
                 <Route exact path="/login" element={<Login />} />

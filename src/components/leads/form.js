@@ -32,8 +32,8 @@ export class LeadForm extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, message } = this.state;
-    const lead = { name, email, message };
+    const { name, email, message, status } = this.state;
+    const lead = { name, email, message, status };
     if (this.props.data) {
       this.props.updateLead(this.props.data.id, lead);
     } else {
