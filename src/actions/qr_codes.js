@@ -111,6 +111,7 @@ export const generateQRCode = (id, download = false) => {
 };
 
 export const addQrCode = (qr_code) => (dispatch, getState) => {
+  console.log(qr_code)
   axios
     .post(`${BASE_URL}/api/qr-codes/`, qr_code, {
       ...tokenConfig(getState),

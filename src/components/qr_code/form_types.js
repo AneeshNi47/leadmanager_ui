@@ -45,9 +45,9 @@ export const VCardForm = ({ onChange }) => (
 export const LocationForm = ({ onChange }) => (
   <Form.Group className="mb-3">
     <Form.Label>Latitude</Form.Label>
-    <Form.Control type="number" name="latitude" onChange={onChange} />
+    <Form.Control type="float" name="latitude" onChange={onChange} />
     <Form.Label>Longitude</Form.Label>
-    <Form.Control type="number" name="longitude" onChange={onChange} />
+    <Form.Control type="float" name="longitude" onChange={onChange} />
   </Form.Group>
 );
 export const EPCForm = ({ onChange }) => (
